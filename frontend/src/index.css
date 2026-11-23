@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #080b14;
+  --color-surface: #0e1320;
+  --color-surface-2: #141a2b;
+  --color-surface-3: #1b2236;
+  --color-line: #232c42;
+  --color-line-strong: #2f3a55;
+
+  --color-ink: #e8ecf6;
+  --color-ink-muted: #97a1bd;
+  --color-ink-faint: #67718f;
+
+  --color-brand: #38bdf8;
+  --color-brand-strong: #0ea5e9;
+  --color-brand-dim: #0b4a6b;
+
+  --color-positive: #34d399;
+  --color-positive-dim: #0f3f33;
+  --color-warning: #fbbf24;
+  --color-warning-dim: #453113;
+  --color-critical: #f87171;
+  --color-critical-dim: #4a1d1d;
+  --color-neutral-dim: #1e2537;
+
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-dim);
+    color: var(--color-ink);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-canvas);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-surface-3);
+    border-radius: 9999px;
+    border: 2px solid var(--color-canvas);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-line-strong);
+  }
+
+  input,
+  textarea,
+  select {
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  .grid-noise {
+    background-image:
+      linear-gradient(to right, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
+
+@keyframes cw-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cw-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in {
+  animation: cw-fade-in 0.25s ease-out both;
+}
+
+.animate-slide-in {
+  animation: cw-slide-in 0.25s ease-out both;
+}

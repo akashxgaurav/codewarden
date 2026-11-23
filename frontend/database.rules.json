@@ -1,0 +1,104 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+
+        "profile": {
+          ".validate": "newData.hasChildren(['displayName', 'onboarded'])",
+          "displayName": { ".validate": "newData.isString()" },
+          "activeWorkspaceId": { ".validate": "newData.isString()" },
+          "onboarded": { ".validate": "newData.isBoolean()" }
+        },
+
+        "workspaces": {
+          "$workspaceId": {
+            ".validate": "newData.hasChildren(['id', 'name', 'repoUrl', 'branch', 'createdAt'])",
+
+            "id": { ".validate": "newData.isString()" },
+            "name": { ".validate": "newData.isString()" },
+            "repoUrl": {
+              ".validate": "newData.isString() && newData.val().matches(/^https:\\/\\/github\\.com\\/[A-Za-z0-9_.-]+\\/[A-Za-z0-9_.-]+(\\.git)?$/)"
+            },
+            "repoDisplayUrl": {
+              ".validate": "newData.isString() && newData.val().matches(/^https:\\/\\/github\\.com\\/[A-Za-z0-9_.-]+\\/[A-Za-z0-9_.-]+$/)"
+            },
+            "owner": { ".validate": "newData.isString()" },
+            "repo": { ".validate": "newData.isString()" },
+            "branch": {
+              ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9._+\\/-]+$/) && newData.val().length <= 255"
+            },
+            "defaultBranch": { ".validate": "newData.isString()" },
+            "branches": {
+              ".validate": "newData.hasChildren()",
+              "$branch": {
+                ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9._+\\/-]+$/)"
+              }
+            },
+            "cloudWatch": {
+              ".validate": "newData.hasChildren(['region', 'logGroupName'])",
+              "region": { ".validate": "newData.isString()" },
+              "logGroupName": { ".validate": "newData.isString()" },
+              "filterPattern": { ".validate": "newData.isString()" },
+              "connected": { ".validate": "newData.isBoolean()" },
+              "connectedAt": {
+                ".validate": "newData.isNumber() || newData.val() === null"
+              }
+            },
+            "createdAt": { ".validate": "newData.isNumber()" },
+            "updatedAt": { ".validate": "newData.isNumber()" }
+          }
+        },
+
+        "incidents": {
+          "$incidentId": {
+            ".validate": "newData.hasChildren(['id', 'workspaceId', 'status', 'title', 'createdAt'])",
+
+            "id": { ".validate": "newData.isString()" },
+            "workspaceId": { ".validate": "newData.isString()" },
+            "ownerUid": { ".validate": "newData.isString() && newData.val() === $uid" },
+            "repoUrl": { ".validate": "newData.isString()" },
+            "repoDisplayUrl": { ".validate": "newData.isString()" },
+            "branch": { ".validate": "newData.isString()" },
+            "title": { ".validate": "newData.isString()" },
+            "errorMessage": { ".validate": "newData.isString()" },
+            "status": {
+              ".validate": "newData.isString() && newData.val().matches(/^(fixed|not_fixable|validation_failed|no_diagnosis|pending|failed)$/)"
+            },
+            "confidence": { ".validate": "newData.isString()" },
+            "rootCause": { ".validate": "newData.isString()" },
+            "fixPlan": { ".validate": "newData.isString()" },
+            "affectedFiles": {
+              ".validate": "newData.hasChildren()",
+              "$file": { ".validate": "newData.isString()" }
+            },
+            "regressionTest": {
+              "path": { ".validate": "newData.isString()" },
+              "description": { ".validate": "newData.isString()" }
+            },
+            "fixBranch": { ".validate": "newData.isString()" },
+            "commit": { ".validate": "newData.isString()" },
+            "pushed": { ".validate": "newData.isBoolean()" },
+            "severity": { ".validate": "newData.isString()" },
+            "source": { ".validate": "newData.isString()" },
+            "incidentId": { ".validate": "newData.isString()" },
+            "priorsUsed": { ".validate": "newData.isNumber()" },
+            "validationReason": { ".validate": "newData.isString()" },
+            "steps": {
+              ".validate": "newData.hasChildren()",
+              "$step": { ".validate": "newData.isString()" }
+            },
+            "createdAt": { ".validate": "newData.isNumber()" },
+            "updatedAt": { ".validate": "newData.isNumber()" }
+          }
+        }
+      }
+    },
+
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}

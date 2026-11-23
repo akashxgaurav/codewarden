@@ -1,17 +1,13 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import {
   CheckCircle2,
   Cloud,
-  Database,
   ExternalLink,
   GitBranch,
   Loader2,
   Pencil,
-  Plug,
   PlusCircle,
   Trash2,
-  XCircle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { AppShell } from "@/components/layout/AppShell";
@@ -28,12 +24,12 @@ import { CloudWatchStatus } from "@/components/onboarding/CloudWatchStatus";
 import { useAuth } from "@/context/auth-context";
 import { useWorkspace } from "@/context/workspace-context";
 import { api } from "@/lib/api/client";
-import { appMode, apiBaseUrl } from "@/lib/env";
+import { appMode } from "@/lib/env";
 import { formatDate, formatRelativeTime } from "@/lib/format";
 import type { CloudFormationTemplate, Workspace } from "@/types";
 
 export function SettingsPage() {
-  const { user, updateDisplayName, getIdToken, mode } = useAuth();
+  const { user, updateDisplayName, getIdToken } = useAuth();
   const { workspaces, incidents, activeWorkspace, deleteWorkspace, updateWorkspace } = useWorkspace();
 
   const [nameDraft, setNameDraft] = useState<string | null>(null);
@@ -51,13 +47,6 @@ export function SettingsPage() {
   const [logGroupDraft, setLogGroupDraft] = useState("");
 
   const displayName = nameDraft ?? user?.displayName ?? "";
-
-  const health = useQuery({
-    queryKey: ["api-health"],
-    queryFn: () => api.health({ getIdToken }),
-    refetchInterval: 30_000,
-    retry: false,
-  });
 
   async function saveProfile() {
     setProfileMessage(null);

@@ -1,0 +1,18 @@
+# Netlify configuration for the Codewarden frontend (React + Vite).
+# The site's base directory is `frontend`, so paths here are relative to it.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Serve index.html for every client-side route handled by React Router.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Vite emits content-hashed assets, so they can be cached indefinitely.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
